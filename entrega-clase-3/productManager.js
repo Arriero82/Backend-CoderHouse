@@ -7,12 +7,12 @@ class ProductManager {
   }
   addProduct(title, description, price, thumbnail, code, stock) {
     const product = {
-      title: title ?? "missing",
+      title: title || "missing",
       description: description ?? "missing",
-      price: price ?? "missing",
+      price: price || "missing",
       thumbnail: thumbnail ?? "missing",
-      code: code ?? "missing",
-      stock: stock ?? "missing",
+      code: code || "missing",
+      stock: stock || "missing",
     };
 
     let anyMissing = Object.values(product);
@@ -26,8 +26,7 @@ class ProductManager {
 
     let codeArray = [];
     this.products.forEach((el) => {
-      let passThrough = Object.values(el);
-      codeArray.push(passThrough[4]);
+      codeArray.push(el.code);
     });
 
     if (anyMissing.includes("missing")) {
@@ -47,16 +46,16 @@ class ProductManager {
     if(product.length == 0){
         return `no product found with id ${id}`
     }else{
-        return product;
+        return product[0];
     }
   }
 }
 
 let remeras = new ProductManager();
-remeras.addProduct('remera1', "remera hombre", 5000, "algun link", "abc123", 50);
+remeras.addProduct('remera1', 'remera hombre', 5000, 'algun link', 'abc123', 50);
 remeras.addProduct('remera2','remera hombre',5000,'algun link','abc124', 50)
-remeras.addProduct('remera3','remera hombre',5000,'algun link','abc124', 50)
+remeras.addProduct('','remera hombre',5000,'algun link','abc125', 50)
 remeras.addProduct(null,'remera hombre',5000,'algun link','abc125')
-//console.log(remeras.getProducts());
-console.log(remeras.getProductById(1));
-console.log(remeras.getProductById(3));
+console.log(remeras.getProducts());
+//console.log(remeras.getProductById(1));
+//console.log(remeras.getProductById(3));
