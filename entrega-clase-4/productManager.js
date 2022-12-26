@@ -36,11 +36,6 @@ class ProductManager {
       product.id = products[products.length - 1].id + 1;
     }
 
-    /*     let codeArray = [];
-    products.forEach((el) => {
-      codeArray.push(el.code);
-    }); */
-
     if (anyMissing.includes("")) {
       console.log(`missing information, please see: ${anyMissingKeyValues}`);
     } else {
