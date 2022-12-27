@@ -55,33 +55,33 @@ class ProductManager {
 
   async getProductById(id) {
     let products = await this.getProducts();
-    let product = products.filter((prod) => prod.id === id);
-    if (product.length == 0) {
+    let product = await products.find((prod) => prod.id === id);
+      if (product === undefined) {
       return `no product found with id ${id}`;
     } else {
-      return product[0];
+      return product;
     }
   }
   async updateProduct(id, product) {
     let products = await this.getProducts();
     const indexDelete = products.map((product) => product.id).indexOf(id);
-    if (indexDelete != -1) {
+    if (indexDelete === -1) {
+      return `no product found with id ${id}`;
+    } else {
       products.splice(indexDelete, 1, { ...product, id });
       await fs.writeFile(this.path, JSON.stringify(products, null));
       return `product with id ${id} has been updated`;
-    } else {
-      return `no product found with id ${id}`;
     }
   }
   async deleteProduct(id) {
     let products = await this.getProducts();
     const indexDelete = products.map((product) => product.id).indexOf(id);
-    if (indexDelete != -1) {
-      products.splice(indexDelete, 1);
-      await fs.writeFile(this.path, JSON.stringify(products, null));
-      return `product with id ${id} has been deleted`;
+    if (indexDelete === -1) {
+        return `no product found with id ${id}`;
     } else {
-      return `no product found with id ${id}`;
+        products.splice(indexDelete, 1);
+        await fs.writeFile(this.path, JSON.stringify(products, null));
+        return `product with id ${id} has been deleted`;
     }
   }
 }
