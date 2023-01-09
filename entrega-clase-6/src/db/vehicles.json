@@ -1,0 +1,72 @@
+    [
+    {
+        "id": 1,
+        "make": "Ford",
+        "model": "Mustang",
+        "year": 1969,
+        "photo_url": "https://www.example.com/mustang.jpg"
+    },
+    {
+        "id": 2,
+        "make": "Chevrolet",
+        "model": "Camaro",
+        "year": 1967,
+        "photo_url": "https://www.example.com/camaro.jpg"
+    },
+    {
+        "id": 3,
+        "make": "Dodge",
+        "model": "Challenger",
+        "year": 1970,
+        "photo_url": "https://www.example.com/challenger.jpg"
+    },
+    {
+        "id": 4,
+        "make": "Plymouth",
+        "model": "Barracuda",
+        "year": 1970,
+        "photo_url": "https://www.example.com/barracuda.jpg"
+    },
+    {
+        "id": 5,
+        "make": "Pontiac",
+        "model": "Firebird",
+        "year": 1970,
+        "photo_url": "https://www.example.com/firebird.jpg"
+    },
+    {
+        "id": 6,
+        "make": "Shelby",
+        "model": "GT500",
+        "year": 1968,
+        "photo_url": "https://www.example.com/gt500.jpg"
+    },
+    {
+        "id": 7,
+        "make": "Chevrolet",
+        "model": "Corvette",
+        "year": 1968,
+        "photo_url": "https://www.example.com/corvette.jpg"
+    },
+    {
+        "id": 8,
+        "make": "Ford",
+        "model": "Torino",
+        "year": 1968,
+        "photo_url": "https://www.example.com/torino.jpg"
+    },
+    {
+        "id": 9,
+        "make": "Dodge",
+        "model": "Charger",
+        "year": 1969,
+        "photo_url": "https://www.example.com/charger.jpg"
+    },
+    {
+        "id": 10,
+        "make": "Plymouth",
+        "model": "Road Runner",
+        "year": 1969,
+        "photo_url": "https://www.example.com/roadrunner.jpg"
+    }
+]
