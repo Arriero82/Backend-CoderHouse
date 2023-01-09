@@ -14,11 +14,12 @@ app.use(express.urlencoded({ extended: true }));
 const productManager = new ProductManager(path);
 
 //trae todos los productos, pero acepta desde y hasta para acortar la busqueda
+const LIMIT = 20;
 app.get("/products", (req, res) => {
-  const { from = 1, limit = Infinity} = req.query;
+  const { from = 1, limit = LIMIT} = req.query;
     productManager  
-    .getProducts()  
-    .then((data) => res.send(data.splice(from - 1, limit)))
+    .getProducts()    
+    .then((data) => res.send({data: data.splice(from - 1, limit), from, limit}))
     .catch((error) => console.log(error));
 });
 
