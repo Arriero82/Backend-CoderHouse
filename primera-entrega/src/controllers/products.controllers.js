@@ -42,16 +42,16 @@ router.post("/", async (req, res) => {
       title,
       description,
       code,
-      price,
+      price,    
       status,
       stock,
       category,
       thumbnails,
     };
     const savedProduct = await productManager.addProducts(product);
-    res.json({ msg: `added product ${savedProduct}` });
+    res.json({ savedProduct });
   } catch (error) {
-    res.json({ msg: error });
+    console.log(error);
   }
 });
 
@@ -79,19 +79,19 @@ router.put("/:pid", async (req, res) => {
       thumbnails,
     };
     const updatedProduct = await productManager.updateProduct(pid, product);
-    res.json({ msg: updatedProduct});
+    res.json({updatedProduct});
   } catch (error) {
     res.json({ error: error });
   }
-});
+}); 
 
 router.delete("/:pid", async (req, res) => {    
   try {
     const { pid } = req.params;
-    await productManager.deleteProduct(pid)
-    res.json({ msg: `product with id ${pid} has been deleted`});
+    const deletedProduct = await productManager.deleteProduct(pid)
+    res.json({deletedProduct});
   } catch (error) {
-    
+    console.log(error);
   }
 });
 
