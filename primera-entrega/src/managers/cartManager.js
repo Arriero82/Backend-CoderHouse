@@ -6,6 +6,8 @@ class CartManager extends ProductManager {
   constructor(path) {
     super(path);
   }
+
+  //crea un carrito nuevo con id y con un array de productos vacios
   async addCart() {
     const carts = await this.getProducts();
     const id = uuid();
@@ -13,6 +15,8 @@ class CartManager extends ProductManager {
     carts.push(cart);
     await fs.writeFile(this.path, JSON.stringify(carts, null));
   }
+  //toma el id de carrito y el id de producto, obtiene todo los carritos, revisa que el carrito del cid exista.
+  //revisa que el id de producto exista o no en ese carrito, si no existe lo suma con cantidad 1, de lo contrario aniade una unidad
   async addProduct(cid, pid) {
     const carts = await this.getProducts();
     const indexCart = carts.map((cart) => cart.id).indexOf(cid);
