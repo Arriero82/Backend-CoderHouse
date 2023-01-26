@@ -17,6 +17,7 @@ class CartManager extends ProductManager {
   }
   //toma el id de carrito y el id de producto, obtiene todo los carritos, revisa que el carrito del cid exista.
   //revisa que el id de producto exista o no en ese carrito, si no existe lo suma con cantidad 1, de lo contrario aniade una unidad
+  //si no se necesita enviar mensaje al frontend se pueden quitar los return y mover la linea de escritura en db al final del condicional 
   async addProduct(cid, pid) {
     const carts = await this.getProducts();
     const indexCart = carts.map((cart) => cart.id).indexOf(cid);
@@ -24,7 +25,22 @@ class CartManager extends ProductManager {
       return { error: `no cart found with id ${cid}` };
     } else {
       const cart = carts[indexCart];
-      const indexProd = cart.products.map((product) => product.id).indexOf(pid);
+      const productInCart = cart.products.find(product => product.id === pid)
+      if(productInCart){
+        productInCart.quantity++;
+        await fs.writeFile(this.path, JSON.stringify(carts, null)); 
+        return `product with id ${pid} has been added to cart for a total of ${productInCart.quantity} units`;
+      }else{
+        const product = {};
+        product.id = pid;
+        product.quantity = 1;
+        cart.products.push(product)
+        await fs.writeFile(this.path, JSON.stringify(carts, null)); 
+        return `product with id ${pid} has been added to cart id ${cid}`;
+      }
+
+      //old method
+      /* const indexProd = cart.products.map((product) => product.id).indexOf(pid);
       if (indexProd === -1) {
         const product = { id: pid, quantity: 1 };
         cart.products.push(product);
@@ -38,7 +54,7 @@ class CartManager extends ProductManager {
         carts.splice(indexCart, 1, { ...cart, id: cid });
         await fs.writeFile(this.path, JSON.stringify(carts, null)); 
         return `product with id ${pid} has been added to cart for a total of ${quantity} units`;
-      }
+      } */
     }
   }
 }
