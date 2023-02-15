@@ -1,5 +1,7 @@
 const { Router } = require("express");
+const { io } = require('socket.io-client');
 const ProductManager = require("../managers/productManager");
+const socket = io()
 
 const path = "./src/db/products/products.json";
 const router = Router();
@@ -49,6 +51,8 @@ router.post("/", async (req, res) => {
       thumbnails,
     };
     const savedProduct = await productManager.addProducts(product);
+    const products = await productManager.getProducts();
+    socket.emit('newProduct', products)
     res.json({ savedProduct });
   } catch (error) {
     console.log(error);

@@ -16,7 +16,7 @@ const render = (array) => {
   document.querySelector("#cards-container").innerHTML = html;
 };
 
-socket.on("message", (data) => {
+socket.on('message', (data) => {
   console.log(data);
   render(data);
 });

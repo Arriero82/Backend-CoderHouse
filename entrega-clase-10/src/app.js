@@ -29,4 +29,8 @@ const productManager = new ProductManager(path)
 io.on('connection', socket => { 
     console.log(`user connected: ${socket.id}`);
     productManager.getProducts().then(data => io.emit('message', data))
+
+    socket.on('newProduct', data => {
+        console.log(data);
+    })
 })          
