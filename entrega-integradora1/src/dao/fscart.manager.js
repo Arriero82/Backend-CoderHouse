@@ -42,5 +42,5 @@ class CartManager extends ProductManager {
     }
   }
 }
-  
+
 module.exports = CartManager;
