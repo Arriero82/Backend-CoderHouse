@@ -29,6 +29,14 @@ router.get("/", async (req, res) => {
       })
     );
     res.json({ response });
+  } catch (error) {}
+});
+
+router.get("/:pid", async (req, res) => {
+  try {
+    const { pid } = req.params;
+    const product = await Product.getById(pid);
+    res.json({ product });
   } catch (error) {
     res.json({ error });
   }
@@ -76,9 +84,13 @@ router.put("/:pid", async (req, res) => {
 });
 
 router.delete("/:pid", async (req, res) => {
+  try {
     const { pid } = req.params;
-    await Product.deleteById(pid)
+    await Product.deleteById(pid);
     res.json({ message: `product with Id ${pid} has been deleted` });
+  } catch (error) {
+    res.json({ error });
+  }
 });
 
 router.post("/populate/", async (req, res) => {

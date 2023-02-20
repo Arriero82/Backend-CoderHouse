@@ -10,6 +10,14 @@ class ProductManager {
       console.log(error);
     }
   }
+  async getById(pid) {
+    try {
+      const product = await Product.findById(pid);
+      return product;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async save(product) {
     try {
       await Product.create(product);

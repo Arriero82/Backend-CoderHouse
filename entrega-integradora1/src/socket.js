@@ -1,13 +1,6 @@
 import { Server } from "socket.io";
-import app from "./index.js";
-import config from "./config/index.js";
+import httpServer from "./app.js";
 import MessageManager from "./dao/message.manager.js";
-
-const {port} = config.port
-
-const httpServer = app.listen(port, () => {
-    console.log(`server running at port ${port}`);
-})
 
 const io = new Server(httpServer)
 
@@ -21,4 +14,3 @@ io.on('connection', socket => {
         io.emit('messageLogs', await Message.get())    
     })
 })
-
