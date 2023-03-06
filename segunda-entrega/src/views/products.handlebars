@@ -1,0 +1,11 @@
+<h1>Productos</h1>
+
+{{#each products.docs}}
+    {{this}}
+    <hr>
+{{/each}}
+
+<hr>
+<a href="{{products.prevPage}}">Prev Page</a>
+<p>{{products.page}}</p>
+<a href="{{products.nextPage}}">Next Page</a>
