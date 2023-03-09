@@ -18,7 +18,8 @@ router.get("/products", async (req, res) => {
   try {
     const { limit, page, query, sort } = req.query;
     const products = await Product.get(limit, page, query, sort);
-    console.log(products);
+    const {user} = req.session;
+    products.user = user
     res.render("products", {products});
   } catch (error) {
     res.render("products", error);

@@ -3,7 +3,7 @@ import { publicAccess, privateAccess } from "../middlewares/index.js";
 
 const router = Router();
 
-router.get("/", privateAccess, (req, res) => {
+router.get("/profile", privateAccess, (req, res) => {
   const { user } = req.session;
   res.render("profile", { user });
 });

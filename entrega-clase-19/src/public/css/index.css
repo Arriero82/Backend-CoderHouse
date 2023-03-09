@@ -1,12 +1,12 @@
 body {
-    background-color: black;
+    background-color: beige;
 }
 
 h1 {
-    color: white;
+    color: black;
 }
 
 p {
-    color: white;
+    color: green;   
     size: 50px
 }

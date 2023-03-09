@@ -1,5 +1,7 @@
 import { Router } from "express";
-import User from '../dao/models/users.models.js'
+import UserManager from "../dao/user.manager.js";
+
+const User = new UserManager();
 
 const router = Router();
 
@@ -18,8 +20,9 @@ router.post("/", async (req, res) => {
     res.status(201).json({ msg: newUser });
   } catch (error) {
     console.log(error);
-    if(error.code === 11000) return res.status(400).json({error: `email is in use`})
-    res.status(500).json({ error: 'internal error'});
+    if (error.code === 11000)
+      return res.status(400).json({ error: `email is in use` });
+    res.status(500).json({ error: "internal error" });
   }
 });
 

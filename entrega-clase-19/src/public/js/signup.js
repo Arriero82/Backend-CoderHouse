@@ -1,4 +1,4 @@
-const form = document.getElementById("signupForm");
+  const form = document.getElementById("signupForm");
 
 form.addEventListener("submit", (e) => {
   e.preventDefault();
@@ -10,7 +10,7 @@ form.addEventListener("submit", (e) => {
   const url = '/api/users'
   const headers = {
     'Content-Type': 'application/json'
-  }
+  } 
   const method = 'POST'
   const body = JSON.stringify(obj)
 
@@ -18,7 +18,7 @@ form.addEventListener("submit", (e) => {
     headers,
     method,
     body
-  })
+  })  
   .then(response => response.json())
   .then(data => console.log(data))
   .catch(error => console.log(error))

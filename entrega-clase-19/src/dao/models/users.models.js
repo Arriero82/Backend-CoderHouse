@@ -3,13 +3,23 @@ import mongoose from "mongoose";
 const usersCollection = 'users'
 
 const usersSchema = mongoose.Schema({
-    name: String,
-    lastname: String,
+    name: {
+        type: String,
+        required: true
+    },
+    lastname: {
+        type: String,
+        required: true 
+    },
     email: {
         type: String,
-        unique: true
+        unique: true,
+        required: true
     },
-    password: String
+    password: {
+        type: String,
+        required: true
+    }
 })
 
 const Users = mongoose.model(usersCollection, usersSchema)
