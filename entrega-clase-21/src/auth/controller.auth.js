@@ -1,6 +1,6 @@
 import { Router } from "express";
 import UserManager from "../dao/user.manager.js";
-import { isValidPass } from "../utils/cryptPassword.js";
+import { createHash, isValidPass } from "../utils/cryptPassword.js";
 
 const User = new UserManager();
 
@@ -45,5 +45,20 @@ router.get("/logout", (req, res) => {
     res.status(500).json({ error: `Internal server error` });
   }
 });
+
+router.patch('/forgotPass', async (req, res) => {
+  try {
+    const {email, password} = req.body
+
+    const encryptedPass = createHash(password)
+
+    await User.updateOne(email, encryptedPass);
+
+    res.json({mesg: 'password has been updated'})
+
+  } catch (error) {
+    res.status(500).json({ error: `Internal server error` });
+  }  
+})
 
 export default router;

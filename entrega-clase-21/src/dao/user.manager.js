@@ -22,7 +22,15 @@ class UserManager {
       const newUser = await User.create(userInfo);
       return newUser;
     } catch (error) {
-      console.log();
+      console.log(error);
+    }
+  }
+  async updateOne(email, encryptedPass){
+    try {
+      const newUser = await User.updateOne({email}, {password: encryptedPass})
+      return newUser;
+    } catch (error) {
+      console.log(error);
     }
   }
 }

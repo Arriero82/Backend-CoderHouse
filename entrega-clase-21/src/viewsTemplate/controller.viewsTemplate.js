@@ -14,6 +14,10 @@ router.get("/login", publicAccess, (req, res) => {
 
 router.get("/signup", publicAccess, (req, res) => {
   res.render("signup");
+}); 
+
+router.get("/forgotPass", (req, res) => {
+  res.render("forgotPass");
 });
 
 export default router;
