@@ -1,5 +1,6 @@
 import { Router } from "express";
 import UserManager from "../dao/user.manager.js";
+import { isValidPass } from "../utils/cryptPassword.js";
 
 const User = new UserManager();
 
@@ -10,12 +11,13 @@ router.post("/", async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne(email);
     if (!user)
-      return res
-        .status(400)
+      return res  
+        .status(401)
         .json({ error: `username and password don't match` });
-    if (user.password !== password)
+    const isValidPassword = isValidPass(user, password);
+    if (!isValidPassword)
       return res
-        .status(400)
+        .status(401)
         .json({ error: `username and password don't match` });
 
     req.session.user = {
@@ -23,9 +25,11 @@ router.post("/", async (req, res) => {
       lastname: user.lastname,
       email: user.email,
     };
-    user.email !== 'adminCoder@coder.com' ? req.session.user.role = 'usuario' : req.session.user.role = 'admin';
+    user.email !== "adminCoder@coder.com"
+      ? (req.session.user.role = "usuario")
+      : (req.session.user.role = "admin");
 
-    return res.redirect("/api/profile");    
+    return res.redirect("/api/profile");
   } catch (error) {
     res.status(500).json({ error: `Internal server error` });
   }

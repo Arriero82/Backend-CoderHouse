@@ -1,5 +1,6 @@
 import { Router } from "express";
 import UserManager from "../dao/user.manager.js";
+import { createHash, isValidPass } from "../utils/cryptPassword.js";
 
 const User = new UserManager();
 
@@ -13,7 +14,7 @@ router.post("/", async (req, res) => {
       name,
       lastname,
       email,
-      password,
+      password: createHash(password),
     };
 
     const newUser = await User.create(newUserInfo);

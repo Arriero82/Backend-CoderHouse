@@ -1,6 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import __dirname from './utils.js'
+import __dirname from './dirname.js'
 import router from './router/index.js'
 import config from "./config/index.js";
 import handlebars from 'express-handlebars' 
