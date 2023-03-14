@@ -1,12 +1,13 @@
 import { Router } from "express";
 import UserManager from "../dao/user.manager.js";
 import { createHash, isValidPass } from "../utils/cryptPassword.js";
+import passport from "passport";
 
 const User = new UserManager();
 
 const router = Router();
 
-router.post("/", async (req, res) => {
+/* router.post("/", async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne(email);
@@ -34,6 +35,31 @@ router.post("/", async (req, res) => {
     res.status(500).json({ error: `Internal server error` });
   }
 });
+ */
+
+router.post('/', passport.authenticate('login', {failureRedirect: '/failLogin'}), async (req, res) => {
+  try {
+    if (!req.user) return res.status(400).json({msg: 'user not registered'})
+
+    req.session.user = {
+      name: req.user.name,
+      lastname: req.user.lastname,
+      email: req.user.email,
+    };
+    req.user.email !== "adminCoder@coder.com"
+      ? (req.session.user.role = "usuario")
+      : (req.session.user.role = "admin");
+
+    return res.redirect("/api/profile");
+
+  } catch (error) {
+    res.status(500).json({ error: `Internal server error` });
+  }
+} )
+
+router.get('/failLogin', (req, res) => {
+  res.json({msg: `session couldn't start`})
+})
 
 router.get("/logout", (req, res) => {
   try {

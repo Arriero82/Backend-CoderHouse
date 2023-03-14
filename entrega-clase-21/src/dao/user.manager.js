@@ -9,9 +9,17 @@ class UserManager {
       console.log(error);
     }
   }
+  async findById(id){
+    try {
+      const user = await User.findById(id);
+      return user;
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async findOne(email){
     try {
-      const user = await User.findOne({email});
+      const user = await User.findOne(email);
       return user;
     } catch (error) {
       console.log(error);

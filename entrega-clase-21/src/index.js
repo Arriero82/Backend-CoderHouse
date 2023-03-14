@@ -1,11 +1,13 @@
 import express from "express";
 import mongoose from "mongoose";
-import __dirname from './dirname.js'
-import router from './router/index.js'
-import config from "./config/index.js";
 import handlebars from 'express-handlebars' 
 import session from 'express-session'
 import MongoStore from 'connect-mongo'
+import passport from "passport";
+import __dirname from './dirname.js'
+import router from './router/index.js'
+import config from "./config/index.js";
+import initializePassport from "./config/passport.config.js";
 
 const app = express();
 app.use(express.json())
@@ -29,6 +31,10 @@ app.use(session({
     resave: false,
     saveUninitialized: false
 }))
+
+initializePassport();
+app.use(passport.initialize())
+app.use(passport.session())
 
 const mongooseRun = async() => {
     try {
