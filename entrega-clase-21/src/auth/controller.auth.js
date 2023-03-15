@@ -37,28 +37,49 @@ const router = Router();
 });
  */
 
-router.post('/', passport.authenticate('login', {failureRedirect: '/failLogin'}), async (req, res) => {
-  try {
-    if (!req.user) return res.status(400).json({msg: 'user not registered'})
+router.post(
+  "/",
+  passport.authenticate("login", { failureRedirect: "/failLogin" }),
+  async (req, res) => {
+    try {
+      if (!req.user)
+        return res.status(400).json({ msg: "user not registered" });
 
-    req.session.user = {
-      name: req.user.name,
-      lastname: req.user.lastname,
-      email: req.user.email,
-    };
-    req.user.email !== "adminCoder@coder.com"
-      ? (req.session.user.role = "usuario")
-      : (req.session.user.role = "admin");
+      req.session.user = {
+        name: req.user.name,
+        lastname: req.user.lastname,
+        email: req.user.email,
+      };
+      req.user.email !== "adminCoder@coder.com"
+        ? (req.session.user.role = "usuario")
+        : (req.session.user.role = "admin");
 
-    return res.redirect("/api/profile");
-
-  } catch (error) {
-    res.status(500).json({ error: `Internal server error` });
+      res.redirect("/api/profile");
+    } catch (error) {
+      res.status(500).json({ error: `Internal server error` });
+    }
   }
-} )
+);
 
-router.get('/failLogin', (req, res) => {
-  res.json({msg: `session couldn't start`})
+router.get("/failLogin", (req, res) => {
+  res.json({ msg: `session couldn't start` });
+});
+
+router.get( 
+  "/github",
+  passport.authenticate("github", { scope: ["user: email"] }),
+  async (req, res) => {}
+);  
+
+router.get('/githubcallback', passport.authenticate('github', {failureRedirect: '/api/login'}), async (req, res) => {
+  req.session.user = {
+    name: req.user.name,
+    email: req.user.email,
+  };
+  req.user.email !== "adminCoder@coder.com"
+  ? (req.session.user.role = "usuario")
+  : (req.session.user.role = "admin");
+  res.redirect('/api/profile')
 })
 
 router.get("/logout", (req, res) => {
@@ -72,19 +93,18 @@ router.get("/logout", (req, res) => {
   }
 });
 
-router.patch('/forgotPass', async (req, res) => {
+router.patch("/forgotPass", async (req, res) => {
   try {
-    const {email, password} = req.body
+    const { email, password } = req.body;
 
-    const encryptedPass = createHash(password)
+    const encryptedPass = createHash(password);
 
     await User.updateOne(email, encryptedPass);
 
-    res.json({mesg: 'password has been updated'})
-
+    res.json({ mesg: "password has been updated" });
   } catch (error) {
     res.status(500).json({ error: `Internal server error` });
-  }  
-})
+  }
+});
 
 export default router;
