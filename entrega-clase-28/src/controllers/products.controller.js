@@ -14,18 +14,6 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/products", async (req, res) => {
-  try {
-    const { limit, page, query, sort } = req.query;
-    const products = await Product.get(limit, page, query, sort);
-    const {user} = req.session;
-    products.user = user
-    res.render("products", {products});
-  } catch (error) {
-    res.render("products", error);
-  }
-});
-
 router.get("/:pid", async (req, res) => {
   try {
     const { pid } = req.params;

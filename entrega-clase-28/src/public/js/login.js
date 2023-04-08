@@ -1,6 +1,6 @@
 const form = document.getElementById("loginForm");
 
-form.addEventListener("submit", (e) => {
+  form.addEventListener("submit", (e) => {
   e.preventDefault();
   const data = new FormData(form);
   const obj = {};
@@ -22,7 +22,6 @@ form.addEventListener("submit", (e) => {
     .then((response) => response.json())
     .then((data) => {
       if (data.user) {
-        console.log(data.name);
         window.location.href = "http://localhost:8080/profile";
       }
     })
