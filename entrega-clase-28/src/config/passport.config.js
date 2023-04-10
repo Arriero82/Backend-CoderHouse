@@ -3,10 +3,13 @@ import local from "passport-local";
 import githubStrategy from "passport-github2";
 import UserManager from "../dao/user.manager.js";
 import { createHash, isValidPass } from "../utils/cryptPassword.js";
+import config from "./index.js";
 
 const User = new UserManager();
 
 const LocalStrategy = local.Strategy;
+
+const {clientID, clientSecret, callbackURL} = config.passportGithub
 
 const initializePassport = () => {
   passport.use(
@@ -70,14 +73,14 @@ const initializePassport = () => {
       }
     )
   );
-
+  
   passport.use( 
     "github",
     new githubStrategy(
       {
-        clientID: "Iv1.c0a28b063778b8a2",
-        clientSecret: "43e78acb52adc8686d9831d6d58963d3cdf76bfb",
-        callbackURL: "http://localhost:8080/api/auth/githubcallback",
+        clientID: clientID,
+        clientSecret: clientSecret,
+        callbackURL: callbackURL
       },
       async (accessToken, refreshToken, profile, done) => {
         try {   

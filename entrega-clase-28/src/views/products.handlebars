@@ -1,6 +1,10 @@
 <h1>Productos</h1>
 <h2>Hola {{user.name}} {{user.lastname}}</h2>
 
+{{#if error}}
+<p>{{error}}</p>
+{{/if}}
+
 <div class="items">
   {{#each docs}}
     <div class="card">

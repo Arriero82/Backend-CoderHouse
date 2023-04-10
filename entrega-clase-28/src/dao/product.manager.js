@@ -2,7 +2,7 @@
 import FilesManager from "./files.manager.js";
 
 class ProductManager {
-  async get(limit = 10, page = 1, query, sort) {
+  async get(limit = 5, page = 1, query, sort) {
     try {
       const myCustomLabels = {
         limit: false,
@@ -15,19 +15,19 @@ class ProductManager {
       const pageOptions = {
         page,
         limit,
-        sort: { price: sort },  
+        sort: { price: sort   },  
         customLabels: myCustomLabels,
       };
 
       const products = await Product.paginate(
         queryModel,
-        pageOptions,
+        pageOptions,  
         function (err, result) {
-          return result;
+          return result;  
         }
       );
-      products.nextPage = `http://localhost:${process.env.port}/api/products/products?page=${products.nextPage}&limit=${limit}`
-      products.prevPage = `http://localhost:${process.env.port}/api/products/products?page=${products.prevPage}&limit=${limit}`
+      products.nextPage = `http://localhost:${process.env.port}/products?page=${products.nextPage}&limit=${limit}`
+      products.prevPage = `http://localhost:${process.env.port}/products?page=${products.prevPage}&limit=${limit}`
       return products;
     } catch (error) {
       console.log(error);
