@@ -3,7 +3,7 @@ import cartsController from '../controllers/carts.controller.js'
 import messageController from '../controllers/messages.controller.js'
 import usersController from '../controllers/users.controller.js'
 import viewsTemplateController from '../controllers/viewsTemplate.controller.js'
-import authController from '../auth/controller.auth.js'
+import authController from '../controllers/controller.auth.js'
 
 const router = (app) => {
     app.use('/api/products', productsController)
