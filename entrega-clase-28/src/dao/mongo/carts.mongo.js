@@ -1,5 +1,5 @@
 import Cart from "./models/carts.models.js";
-import ProductManager from "./product.manager.js";
+import ProductManager from "./products.mongo.js";
 
 const Product = new ProductManager();
 
