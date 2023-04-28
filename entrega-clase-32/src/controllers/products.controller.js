@@ -1,6 +1,9 @@
 import { Router } from "express";
 import ProductManager from "../dao/mongo/products.mongo.js";
 import produdctPrivateAccess from "../middlewares/productPrivateAccess.middleware.js";
+import CustomError from "../utils/errors/CustomErrors.errors.js";
+import { generateProductErrorInfo } from "../utils/errors/info.error.js";
+import EnumProductErrors from "../utils/errors/enums.errors.js";
 const Product = new ProductManager();
 
 const router = Router();
@@ -23,12 +26,22 @@ router.get("/:pid", async (req, res) => {
   } catch (error) {
     res.status(500).json({ error });
   }
-}); 
+});
 
-router.post("/", produdctPrivateAccess ,async (req, res) => {
+router.post("/", async (req, res) => {
   try {
     const { title, description, code, price, stock, category, thumbnails } =
       req.body;
+
+    if(!title || !code || !price){
+      CustomError.createError({
+        name: 'Product creation error',
+        cause: generateProductErrorInfo({title, code, price}),
+        message: 'error creating product',
+        code: EnumProductErrors.INVALID_TYPES_ERROR
+      })
+    }
+
     const product = {
       title,
       description,

@@ -28,6 +28,7 @@ const initializePassport = () => {
             console.log("user exists");
             return done(null, false);
           }
+
           const newUserInfo = {
             name,
             lastname,

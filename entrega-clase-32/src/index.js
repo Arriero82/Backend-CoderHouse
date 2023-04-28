@@ -9,6 +9,7 @@ import router from './router/index.js'
 import config from "./config/index.js";
 import initializePassport from "./config/passport.config.js";
 import mongooseRun from "./db/index.js";
+import errorHandler from "./middlewares/errorHandler.js";
 
 const app = express();
 app.use(express.json())
@@ -40,5 +41,7 @@ app.use(passport.session())
 mongooseRun()
 
 router(app)
+
+app.use(errorHandler)
 
 export default app

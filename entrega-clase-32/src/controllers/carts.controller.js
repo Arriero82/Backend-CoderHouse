@@ -1,5 +1,8 @@
 import { Router } from "express";
 import CartManager from "../dao/mongo/carts.mongo.js";
+import CustomError from "../utils/errors/CustomErrors.errors.js";
+import { generateParamErrorInfo } from "../utils/errors/info.error.js";
+import EnumErrors from "../utils/errors/enums.errors.js";
 const Cart = new CartManager();
 
 const router = Router();
@@ -50,6 +53,14 @@ router.post("/", async (req, res) => {
 router.post("/:cid/product/:pid", async (req, res) => {
   try {
     const { cid, pid } = req.params;
+    if(cid.length !== 24 || pid.length !== 24){
+      CustomError.createError({
+          name: 'Product add error',
+          cause: generateParamErrorInfo(cid, pid),
+          message: 'error adding product to cart',
+          code: EnumErrors.INVALID_PARAM_ERROR
+      })
+    }
     await Cart.addProduct(cid, pid);
     const cart = await Cart.getById(cid);
     res.json({ cart });
