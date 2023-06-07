@@ -1,5 +1,10 @@
 import { Router } from "express";
 import CartManager from "../dao/mongo/carts.mongo.js";
+import CustomError from "../utils/errors/CustomErrors.errors.js";
+import { generateCartErrorInfo } from "../utils/errors/info.error.js";
+import EnumErrors from "../utils/errors/enums.errors.js";
+import onlyUserAccess from "../middlewares/onlyUserAccess.middlewares.js";
+
 const Cart = new CartManager();
 
 const router = Router();
@@ -27,12 +32,22 @@ router.get("/:cid", async (req, res) => {
   }
 });
 
-router.get("/:cid/purchase", async (req, res) => {
+router.post("/:cid/purchase", async (req, res) => {
   try {
     const { cid } = req.params;
-    const cart = await Cart.getById(cid);
-    res.json({ cart });
+    if (cid.length !== 24) {
+      CustomError.createError({
+        name: "cart id error",
+        cause: generateCartErrorInfo(cid),
+        message: "error finalizing cart", 
+        code: EnumErrors.INVALID_PARAM_ERROR,
+      }); 
+    }
+    const userEmail = req.session.user.email
+    const response = await Cart.purchase(cid, userEmail)
+    res.json({response});
   } catch (error) {
+    console.log(error);
     res.json({ error });
   }
 });
@@ -47,9 +62,17 @@ router.post("/", async (req, res) => {
   }
 });
 
-router.post("/:cid/product/:pid", async (req, res) => {
+router.post("/:cid/product/:pid", onlyUserAccess, async (req, res) => {
   try {
     const { cid, pid } = req.params;
+    if (cid.length !== 24 || pid.length !== 24) {
+      CustomError.createError({
+        name: "Product add error",
+        cause: generateParamErrorInfo(cid, pid),
+        message: "error adding product to cart",
+        code: EnumErrors.INVALID_PARAM_ERROR,
+      });
+    }
     await Cart.addProduct(cid, pid);
     const cart = await Cart.getById(cid);
     res.json({ cart });

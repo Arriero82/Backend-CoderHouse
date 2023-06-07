@@ -1,7 +1,10 @@
+import { v4 as uuidv4 } from "uuid";
 import Cart from "./models/carts.models.js";
 import ProductManager from "./products.mongo.js";
+import TicketManager from "./tickets.mongo.js";
 
 const Product = new ProductManager();
+const Ticket = new TicketManager();
 
 class CartManager {
   async get() {
@@ -58,7 +61,7 @@ class CartManager {
       cart.products = productsArray;
       const response = await Cart.updateOne({ _id: cid }, cart);
       return response;
-    } catch (error) { 
+    } catch (error) {
       console.log(error);
     }
   }
@@ -76,6 +79,49 @@ class CartManager {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async purchase(cid, userEmail) {
+    try {
+      const cart = await Cart.findById(cid);
+      if (cart.products.length === 0) {
+        return "cart has no products, add products";
+      }
+
+      let ammount = 0;
+
+      for (let i = 0; i < cart.products.length; i++) {
+        let id = cart.products[i].product._id.toString();
+
+        let quantity = cart.products[i].quantity;
+        const dbProduct = await Product.getById(id);
+
+        if (quantity <= dbProduct.stock) {
+          dbProduct.stock = dbProduct.stock - quantity;
+          await Product.update(id, dbProduct);
+          ammount += quantity * dbProduct.price;
+          console.log(cart.products);
+          cart.products[i] = {}
+          cart.products[i].quantity =  0;
+          await Cart.updateOne({ _id: cid }, { $set: { products: cart.products } });
+        }
+      }
+
+      const code = uuidv4();
+      const purchase_datetime = new Date().toISOString();
+      const purchaser = userEmail;
+
+      const ticketData = {
+        code,
+        purchase_datetime,
+        ammount,
+        purchaser,
+      };
+
+      const ticket = await Ticket.create(ticketData)
+      return ticket 
+
+    } catch (error) {}
   }
 
   async deleteProductById(cid, pid) {
@@ -99,7 +145,7 @@ class CartManager {
     }
   }
 
-  async deleteById(cid) {
+  async deleteById(cid) { 
     try {
       if (cid.toString().length !== 24)
         return `product id must have 24 characters`;

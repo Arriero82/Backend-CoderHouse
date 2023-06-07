@@ -4,6 +4,7 @@ import config from "../config/index.js";
 const { user, pass } = config.mongodb;
 
 const mongooseRun = async() => {
+    mongoose.set('strictQuery', false)
     try {
         await mongoose.connect(`mongodb+srv://${user}:${pass}@cluster0.lnyq7c9.mongodb.net/?retryWrites=true&w=majority`)
         console.log('db is connected');

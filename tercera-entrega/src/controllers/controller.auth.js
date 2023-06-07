@@ -1,6 +1,6 @@
 import { Router } from "express";
 import UserManager from "../dao/mongo/users.mongo.js";
-import { createHash, isValidPass } from "../utils/cryptPassword.js";
+import { createHash, isValidPass } from "../utils/cryptPassword.utils.js";
 import passport from "passport";
 
 const User = new UserManager();
@@ -39,7 +39,7 @@ const router = Router();
 
 router.post(
   "/",
-  passport.authenticate("login", { failureRedirect: "/failLogin" }),
+  passport.authenticate("login", { failureRedirect: "/failLogin", session: false }),
   async (req, res) => {
     try {
       if (!req.user)
@@ -53,7 +53,7 @@ router.post(
       req.user.email !== "adminCoder@coder.com"
         ? (req.session.user.role = "usuario")
         : (req.session.user.role = "admin");
-      const user = req.user 
+      const user = req.session.user 
       res.json({user})
     } catch (error) {
       res.status(500).json({ error: `Internal server error` });

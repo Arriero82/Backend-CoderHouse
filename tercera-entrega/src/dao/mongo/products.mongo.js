@@ -1,4 +1,4 @@
-  import Product from "./models/products.models.js";
+import Product from "./models/products.models.js";
 import FilesManager from "../memory/files.memory.js";
 
 class ProductManager {
@@ -55,7 +55,7 @@ class ProductManager {
       await Product.findByIdAndUpdate(filter, product);
       return `product has been updated`;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 
@@ -64,7 +64,7 @@ class ProductManager {
       await Product.findByIdAndDelete(pid);
       return `product has been deleted`;
     } catch (error) {
-      console.log(error);
+      throw error;
     }
   }
 

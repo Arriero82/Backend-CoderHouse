@@ -1,8 +1,7 @@
-function produdctPrivateAccess (req, res, next){
-    console.log(req.session);
-    console.log(req.user);
-    if(!req.user === 'admin') return res.json({msg: "ingreso no autorizado"})
+function productPrivateAccess (req, res, next){
+    const userRole = req.session.user.role
+    if(userRole !== 'admin') return res.json({msg: "ingreso no autorizado"})
     next()
 }   
 
-export default produdctPrivateAccess
+export default productPrivateAccess    

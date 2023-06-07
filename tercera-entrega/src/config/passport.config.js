@@ -2,7 +2,7 @@ import passport from "passport";
 import local from "passport-local";
 import githubStrategy from "passport-github2";
 import UserManager from "../dao/mongo/users.mongo.js";
-import { createHash, isValidPass } from "../utils/cryptPassword.js";
+import { createHash, isValidPass } from "../utils/cryptPassword.utils.js";
 import config from "./index.js";
 
 const User = new UserManager();
@@ -28,11 +28,12 @@ const initializePassport = () => {
             console.log("user exists");
             return done(null, false);
           }
+
           const newUserInfo = {
             name,
             lastname,
             email,
-            password: createHash(password),
+            password: await createHash(password),
           };
           const newUser = await User.create(newUserInfo);
           return done(null, newUser);
@@ -65,7 +66,8 @@ const initializePassport = () => {
             console.log(`user doesn't exist`);
             return done(null, false);
           }
-          if (!isValidPass(user, password)) return done(null, false);
+          const isValidPassword = await isValidPass(user, password);
+          if (!isValidPassword) return done(null, false);
           return done(null, user);
         } catch (error) {
           console.log(error);

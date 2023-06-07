@@ -1,5 +1,17 @@
 import dotenv from 'dotenv'
-dotenv.config({path: `./.env.${process.env.NODE_ENV}`})
+
+let path = ''
+
+if(!process.env.NODE_ENV){
+    path = `./.env`
+}else {
+    path = `./.${process.env.NODE_ENV}.env`
+}
+
+dotenv.config({
+    path: path,
+  });
+
 
 const config = {
     port: {
@@ -17,8 +29,6 @@ const config = {
     persistence: {
         persistence: process.env.PERSISTENCE
     }
-    
-
 }
 
 export default config

@@ -5,12 +5,9 @@ const ticketsCollection = "tickets";
 
 const ticketsSchema = mongoose.Schema({
     code: String,
-    purchase_datetime: Number,
-    amount: Number,
-    purchaser: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "users",
-    }
+    purchase_datetime: String,
+    ammount: Number,
+    purchaser: String
 });
 
 const Tickets = mongoose.model(ticketsCollection, ticketsSchema);
