@@ -1,24 +1,41 @@
-console.log('desde hbs');
+console.log("desde hbs");
 
 function changeRole(email, newRole) {
-    const url = '/api/users'
+  const url = "/api/users/role";
+  const data = {email, newRole}
   const headers = {
-    'Content-Type': 'application/json'
-  } 
-  const method = 'POST'
-  const body = JSON.stringify(obj)
-
+    "Content-Type": "application/json",
+  };
+  const method = "PATCH";
+  const body = JSON.stringify(data);
+  
   fetch(url, {
     headers,
     method,
-    body
-  })  
-  .then(response => response.json())
-  .then(data => console.log(data))
-  .catch(error => console.log(error))
+    body,
+  })
+    .then((response) => response.json())
+    .then((data) => console.log(data))
+    .catch((error) => console.log(error));
+  location.reload()
 }
 
 function deleteUser(email) {
-    // Lógica para eliminar el usuario con el correo electrónico "email"
-    // Aquí puedes agregar tu código para enviar una solicitud al servidor y eliminar al usuario de la base de datos
+    const url = "/api/users/delete";
+    const data = {email}
+    const headers = {
+      "Content-Type": "application/json",
+    };
+    const method = "DELETE";
+    const body = JSON.stringify(data);
+    
+    fetch(url, {
+      headers,
+      method,
+      body,
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.log(error));
+    location.reload()
 }

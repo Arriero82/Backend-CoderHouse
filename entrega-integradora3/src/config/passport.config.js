@@ -4,6 +4,7 @@ import githubStrategy from "passport-github2";
 import UserManager from "../dao/mongo/users.mongo.js";
 import { createHash, isValidPass } from "../utils/cryptPassword.utils.js";
 import config from "./index.js";
+import UserDTO from "../dto/users.dto.js";
 
 const User = new UserManager();
 
@@ -20,7 +21,7 @@ const initializePassport = () => {
         usernameField: "email",
       },
       async (req, username, password, done) => {
-        const { name, lastname, email, role } = req.body;
+        const newUserInfo = new UserDTO(req.body);
 
         try {
           const user = await User.findOne({ email: username });
@@ -29,13 +30,6 @@ const initializePassport = () => {
             return done(null, false);
           }
 
-          const newUserInfo = {
-            name,
-            lastname,
-            email,
-            password: await createHash(password),
-            role
-          };
           const newUser = await User.create(newUserInfo);
           return done(null, newUser);
         } catch (error) {

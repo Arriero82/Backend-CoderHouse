@@ -1,9 +1,9 @@
 import bcrypt from "bcrypt";
 
-const createHash = async (password) =>
+const createHash = (password) =>
   bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 
-const isValidPass = async (user, password) =>
+const isValidPass = (user, password) =>
   bcrypt.compareSync(password, user.password);
 
 export { createHash, isValidPass };

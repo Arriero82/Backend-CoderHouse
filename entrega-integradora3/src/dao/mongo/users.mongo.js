@@ -51,10 +51,26 @@ class UserManager {
       console.log(error);
     }
   }
+  async updateRole(email, newRole){
+    try {
+      const updatedUser = await User.updateOne({email}, {role: newRole})
+      return updatedUser
+    } catch (error) {
+      console.log(error);
+    }
+  }
   async updateConnection(id, date){
     try {
       const updatedUser = await User.findByIdAndUpdate(id, {connection: date} )
       return updatedUser
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async deleteOne(email){
+    try {
+      const deletedUser = await User.deleteOne({email})
+      return deletedUser
     } catch (error) {
       console.log(error);
     }
@@ -67,6 +83,7 @@ class UserManager {
       console.log(error);
     }
   }
+
 }
 
 export default UserManager;

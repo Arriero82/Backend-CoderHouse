@@ -23,32 +23,43 @@ class CartManager {
       console.log(error);
     }
   }
-  async create(product) {
+  async findOne(email){
     try {
-      const cart = await Cart.create(product);
+      const cart = await Cart.findOne(email);
       return cart;
     } catch (error) {
       console.log(error);
     }
   }
-  async addProduct(cid, pid) {
+  async create(product, user) {
     try {
-      const product = await Product.getById(pid);
-      if (!product) return `it doesn't exist a product with id ${pid}`;
-      const cart = await Cart.findById(cid);
-      if (!cart) return `it doesn't exist a cart with id ${cid}`;
+      const cart = await Cart.create(product, user);
+      return cart;
+    } catch (error) {
+      console.log(error);
+    }
+  }
+  async addProduct(email, product) {
+    try {
+      /* const product = await Product.getById(pid);
+      if (!product) return `it doesn't exist a product with id ${pid}`; */
 
+      const {id, quantity} = product  
+
+      const cart = await Cart.findOne({user: email});
+
+      if (!cart) return `it doesn't exist a cart associated to ${email}`;
       const index = cart.products
         .map((elem) => elem.product._id.toString())
-        .indexOf(pid);
+        .indexOf(id);
 
       if (index === -1) {
-        cart.products.push({ product: pid });
+        cart.products.push({ product: id, quantity });
       } else {
-        cart.products[index].quantity += 1;
+        cart.products[index].quantity += Number(quantity);
       }
 
-      const response = await Cart.updateOne({ _id: cid }, cart);
+      const response = await Cart.updateOne({ user: email }, cart);
       return response;
     } catch (error) {
       console.log(error);

@@ -1,6 +1,6 @@
 import { Router } from "express";
 import ProductManager from "../dao/mongo/products.mongo.js";
-import { productPrivateAccess } from "../middlewares/index.js";
+import { privateAccess } from "../middlewares/index.js";
 import CustomError from "../utils/errors/CustomErrors.errors.js";
 import { generateProductErrorInfo } from "../utils/errors/info.error.js";
 import EnumProductErrors from "../utils/errors/enums.errors.js";

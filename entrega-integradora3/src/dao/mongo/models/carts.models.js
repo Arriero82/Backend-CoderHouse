@@ -17,7 +17,8 @@ const cartSchema = mongoose.Schema({
       },
     ],
     default: [],
-  },    
+  },
+  user: String  
 });
 
 cartSchema.pre(["find", "findOne"], function () {

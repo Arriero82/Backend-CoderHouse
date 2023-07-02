@@ -10,13 +10,26 @@ class TicketManager {
       throw error;
     }
   }
+
+  async findLastOne(email) {
+    try {
+      const ticket = await Tickets.findOne({ purchaser: email }).sort({
+        purchase_datetime: -1,
+      });
+      return ticket;
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+
   async create(ticketData) {
     try {
-        const ticket = await Tickets.create(ticketData)
-        return ticket;
+      const ticket = await Tickets.create(ticketData);
+      return ticket;
     } catch (error) {
-        console.log(error);
-        throw error;
+      console.log(error);
+      throw error;
     }
   }
 }

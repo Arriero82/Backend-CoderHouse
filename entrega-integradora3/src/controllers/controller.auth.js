@@ -45,7 +45,6 @@ router.post(
     try {
       if (!req.user)
         return res.status(400).json({ msg: "user not registered" });
-      
       req.session.user = {
         name: req.user.name,
         lastname: req.user.lastname,
@@ -113,14 +112,14 @@ router.patch("/forgotPass", async (req, res) => {
     
     const user = await User.findOne({email});
   
-    const isValidPassword = await isValidPass(user, password);
+    const isValidPassword = isValidPass(user, password);
  
     if (isValidPassword)
       return res
         .status(401)
         .json({ error: `password needs to be different` });
 
-    const encryptedPass = await createHash(password);
+    const encryptedPass = createHash(password);
 
     await User.updateOne(email, encryptedPass);
 

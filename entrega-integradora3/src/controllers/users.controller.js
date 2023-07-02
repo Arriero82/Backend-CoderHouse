@@ -48,9 +48,28 @@ router.delete('/', async (req, res) => {
     const cutOffDate = new Date();
     cutOffDate.setHours(cutOffDate.getHours() - 48)
     const usersToDelete = await User.getByFilter({connection: { $lt: cutOffDate }})
-    //const result =  await User.deleteMany({ connection: { $lt: cutOffDate } })
     const emails = usersToDelete.map(user => user.email);
+    await User.deleteMany({ connection: { $lt: cutOffDate } })
     return res.redirect(`/mail/deleteusers?email=${encodeURIComponent(JSON.stringify(emails))}`);  
+  } catch (error) {
+    throw error
+  }
+})
+
+router.patch('/role', async (req, res) => {
+  try {
+    const {email, newRole} = req.body
+    await User.updateRole(email, newRole)
+  } catch (error) {
+    throw error
+  }
+})
+
+router.delete('/delete', async (req, res) => {
+  try {
+    const email = req.body.email
+    console.log(email);
+    await User.deleteOne(email)
   } catch (error) {
     throw error
   }
