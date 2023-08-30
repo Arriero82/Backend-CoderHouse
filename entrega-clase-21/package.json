@@ -20,7 +20,7 @@
     "express": "^4.18.2",
     "express-handlebars": "^6.0.7",
     "express-session": "^1.17.3",
-    "mongoose": "^6.9.1",
+    "mongoose": "^6.12.0",
     "mongoose-paginate-v2": "^1.7.1",
     "passport": "^0.6.0",
     "passport-github2": "^0.1.12",
